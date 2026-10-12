@@ -21,6 +21,9 @@ public class Player : MonoBehaviour
     private bool sprintBurst = false;
     private bool sprinting = false;
 
+    [SerializeField] private string[] collectableItems;
+    private int[] itemsCollected;
+
     void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -31,6 +34,7 @@ public class Player : MonoBehaviour
     {
         mainCamera = Camera.main;
         rb = GetComponent<Rigidbody2D>();
+        itemsCollected = new int[collectableItems.Length];
     }
 
     void FixedUpdate()
@@ -95,6 +99,22 @@ public class Player : MonoBehaviour
     private Vector2 GetMouseWorldPosition()
     {
         return mainCamera.ScreenToWorldPoint(inputActions.Player.MousePosition.ReadValue<Vector2>());
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Collectable"))
+        {
+            for (int i = 0; i < collectableItems.Length; i++)
+            {
+                if (collision.name.Contains(collectableItems[i]))
+                {
+                    itemsCollected[i] += 1;
+                    Destroy(collision.gameObject);
+                    Debug.Log("Collected item: " + collision.name);
+                }
+            }
+        }
     }
 
     void OnEnable()
