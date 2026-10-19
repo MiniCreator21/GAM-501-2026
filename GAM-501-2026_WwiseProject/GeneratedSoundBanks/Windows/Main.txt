@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	2656952517	Music_LevelTwo			\Default Work Unit\Music_LevelTwo	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	1019533534	mus_temp_level_02	Y:\Documents\GitHub\GAM-501-2026\GAM-501-2026_WwiseProject\.cache\Windows\SFX\mus_temp_level_02_FBC78EF0.wem		\Interactive Music Hierarchy\Default Work Unit\Level 2 Music\mus_temp_level_02\mus_temp_level_02		13630428
+

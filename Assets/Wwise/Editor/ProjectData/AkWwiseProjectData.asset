@@ -80,7 +80,7 @@ MonoBehaviour:
     ParentPath: Events\Default Work Unit
     guid: 66b2c09c047be149a21015a3afc3eb1c
     GuidInternal: 
-    m_lastTime: -8584100550543485369
+    m_lastTime: -8584107514524410389
     List: []
   RtpcWwu:
   - PhysicalPath: Game Parameters\Default Work Unit.wwu
@@ -138,9 +138,9 @@ MonoBehaviour:
     GuidInternal: 
     m_lastTime: -8584100550543389379
     List: []
-  ExpandedFileSystemItemIds: 
-  ExpandedWaapiItemIds: 
+  ExpandedFileSystemItemIds: 0600000007000000
+  ExpandedWaapiItemIds: 06000000
   AutoSyncSelection: 0
   autoPopulateEnabled: 1
-  currentDataSource: 0
+  currentDataSource: 1
   CurrentPluginConfig: 
