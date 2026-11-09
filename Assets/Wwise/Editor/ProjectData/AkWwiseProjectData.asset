@@ -66,7 +66,7 @@ MonoBehaviour:
     ParentPath: SoundBanks/Default Work Unit
     guid: 937a1c2b49cfb54eb37a023f01085bd9
     GuidInternal: 
-    m_lastTime: -8584073668437382707
+    m_lastTime: -8584091806668354596
     List:
     - name: Main
       guid: 89142bffeb21e043804699243bfed34e
@@ -81,7 +81,7 @@ MonoBehaviour:
       - ElementName: Main
         ObjectType: 7
         guid: 89142bffeb21e043804699243bfed34e
-      Path: SoundBanks/Default Work Unit/Main
+      Path: SoundBanks\Default Work Unit\Main
   EventWwu:
   - PhysicalPath: Events/Default Work Unit.wwu
     PathAndIcons:
@@ -94,25 +94,8 @@ MonoBehaviour:
     ParentPath: Events/Default Work Unit
     guid: 66b2c09c047be149a21015a3afc3eb1c
     GuidInternal: 
-    m_lastTime: -8584073668443171496
+    m_lastTime: -8584091806672685569
     List:
-    - name: Music_LevelOne
-      guid: 24d2eb8a89946441b7aa598dc7164857
-      id: 2240910551
-      PathAndIcons:
-      - ElementName: Events
-        ObjectType: 5
-        guid: 00000000000000000000000000000000
-      - ElementName: Default Work Unit
-        ObjectType: 12
-        guid: 66b2c09c047be149a21015a3afc3eb1c
-      - ElementName: Music_LevelOne
-        ObjectType: 3
-        guid: 24d2eb8a89946441b7aa598dc7164857
-      Path: Events/Default Work Unit/Music_LevelOne
-      maxAttenuation: 0
-      maxDuration: -1
-      minDuration: -1
     - name: Music_LevelTwo
       guid: cd9fdc4bc263aa4fae02d1636189d8b2
       id: 2656952517
@@ -126,7 +109,7 @@ MonoBehaviour:
       - ElementName: Music_LevelTwo
         ObjectType: 3
         guid: cd9fdc4bc263aa4fae02d1636189d8b2
-      Path: Events/Default Work Unit/Music_LevelTwo
+      Path: Events\Default Work Unit\Music_LevelTwo
       maxAttenuation: 0
       maxDuration: -1
       minDuration: -1
