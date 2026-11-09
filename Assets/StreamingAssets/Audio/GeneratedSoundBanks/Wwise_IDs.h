@@ -13,6 +13,7 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID MUSIC_LEVELONE = 2240910551U;
         static const AkUniqueID MUSIC_LEVELTWO = 2656952517U;
     } // namespace EVENTS
 
