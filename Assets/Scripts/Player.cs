@@ -9,13 +9,13 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerInputActions inputActions;
 
-    [SerializeField] private float maxSwimSpeed = 8f;
+    [SerializeField] private float maxSwimSpeed = 16f;
     [SerializeField] private float swimForce = 10f;
     [SerializeField] private float drag = 2f;
 
     [SerializeField] private float rotationSpeed = 300f;
 
-    [SerializeField] private float sprintBurstStrength = 20f;
+    [SerializeField] private float sprintBurstStrength = 36f;
     [SerializeField] private float sprintMultiplier = 1.8f;
     [SerializeField] private float sprintForceMultiplier = 1.5f;
     private bool sprintBurst = false;
