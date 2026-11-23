@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     enum EnemyState : byte { Idle, Patrolling, Following, Chasing }
     [SerializeField] private EnemyState currentState = EnemyState.Idle;
 
-    private Vector2 targetDestination = Vector2.zero;
+    private Vector2 targetDirection = Vector2.zero;
 
     [SerializeField] private float maxSwimSpeed = 8f;
     [SerializeField] private float swimForce = 10f;
@@ -28,9 +28,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float eyeOffset = 0.6f;
     private Vector2 eyePosition = Vector2.zero;
 
-    [SerializeField] private float patrolWidth = 4f;
-    [SerializeField] private float patrolHeight = 4f;
-    [SerializeField] private float patrolTimerMultiplier = 2f;
+    [SerializeField] private float patrolWidth = 200f;
+    [SerializeField] private float patrolHeight = 10f;
+    [SerializeField] private float patrolTimerMultiplier = 0.5f;
     private float patrolTimer = 0f;
     private Vector2 patrolPosition = Vector2.zero;
     private bool patrolStart = false;
@@ -85,12 +85,12 @@ public class Enemy : MonoBehaviour
         patrolTimer %= 360;
         float x = Mathf.Sin(patrolTimer) * patrolWidth;
         float y = Mathf.Sin(patrolTimer * 2) * patrolHeight;
-        targetDestination = new Vector2(patrolPosition.x + x, patrolPosition.y + y);
+        targetDirection = new Vector2(patrolPosition.x + x, patrolPosition.y + y) - (Vector2)transform.position;
     }
 
     private void FollowPlayer()
     {
-        targetDestination = (Vector2)player.transform.position - ((Vector2)transform.position + eyePosition);
+        targetDirection = (Vector2)player.transform.position - (Vector2)transform.position;
     }
 
     private bool CheckForPlayer()
@@ -111,6 +111,7 @@ public class Enemy : MonoBehaviour
             if (!hit[i].collider.CompareTag("Enemy")) if (hit[i].distance < hitToCheck.distance) hitToCheck = hit[i];
         }
         if (hitToCheck == false) return false;
+        Debug.Log(hitToCheck.collider.tag);
         if (hitToCheck.collider.CompareTag("Player"))
         {
             //Debug.Log("Player detected");
@@ -121,21 +122,19 @@ public class Enemy : MonoBehaviour
 
     private void MoveToTarget(float maxSpeed)
     {
-        if (targetDestination.sqrMagnitude < 0.01f) return; 
+        if (targetDirection.sqrMagnitude < 0.01f) return; 
 
-        Debug.Log(targetDestination);
-
-        targetDestination = targetDestination.normalized;
-        float movementAngle = Mathf.Atan2(targetDestination.y, targetDestination.x) * Mathf.Rad2Deg;
+        targetDirection = targetDirection.normalized;
+        float movementAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         float newAngle = Mathf.MoveTowardsAngle(rb.rotation, movementAngle, rotationSpeed * Time.fixedDeltaTime);
         rb.MoveRotation(newAngle);
 
         float currentMaxSpeed = currentState == EnemyState.Chasing ? maxSpeed * sprintMultiplier : maxSpeed;
         float currentForce = currentState == EnemyState.Chasing ? swimForce * sprintForceMultiplier : swimForce; 
         
-        float distance = targetDestination.magnitude;
+        float distance = targetDirection.magnitude;
         float targetSpeed = Mathf.Min(currentMaxSpeed, distance * currentForce);
-        Vector2 targetVelocity = targetDestination * targetSpeed;
+        Vector2 targetVelocity = targetDirection * targetSpeed;
         Vector2 velocityDifference = targetVelocity - rb.linearVelocity;
         rb.AddForce(velocityDifference * currentForce);
         rb.AddForce(-rb.linearVelocity * drag);

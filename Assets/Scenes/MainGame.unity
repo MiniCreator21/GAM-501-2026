@@ -1204,7 +1204,7 @@ GameObject:
   - component: {fileID: 779221197}
   m_Layer: 3
   m_Name: Item Collection Hitbox
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1668,9 +1668,9 @@ MonoBehaviour:
     m_Bits: 8
   eyeHeight: 0.2
   eyeOffset: 0.6
-  patrolWidth: 2
-  patrolHeight: 1
-  patrolTimerMultiplier: 200
+  patrolWidth: 200
+  patrolHeight: 10
+  patrolTimerMultiplier: 0.5
   player: {fileID: 0}
 --- !u!70 &1388320860
 CapsuleCollider2D:
@@ -1685,10 +1685,10 @@ CapsuleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 575
+    m_Bits: 63
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
