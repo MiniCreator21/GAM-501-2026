@@ -135,7 +135,6 @@ public class Enemy : MonoBehaviour
             if (!hit[i].collider.CompareTag("Enemy")) if (hit[i].distance < hitToCheck.distance) hitToCheck = hit[i];
         }
         if (hitToCheck == false) return false;
-        Debug.Log(hitToCheck.collider.tag);
         if (hitToCheck.collider.CompareTag("Player"))
         {
             //Debug.Log("Player detected");

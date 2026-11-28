@@ -1771,10 +1771,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1388320863}
+  - component: {fileID: 1388320859}
   - component: {fileID: 1388320862}
   - component: {fileID: 1388320861}
   - component: {fileID: 1388320860}
-  - component: {fileID: 1388320859}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -2099,10 +2099,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1501379560}
+  - component: {fileID: 1501379561}
   - component: {fileID: 1501379559}
   - component: {fileID: 1501379562}
   - component: {fileID: 1501379558}
-  - component: {fileID: 1501379561}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -2234,6 +2234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5cfc7f5e2c324459d148891c3f9dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  maxStamina: 60
+  staminaRegenerationRate: 12
+  staminaMultiplier: 84
   maxSwimSpeed: 16
   swimForce: 10
   drag: 2
