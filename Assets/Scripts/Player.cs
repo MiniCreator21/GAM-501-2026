@@ -5,10 +5,14 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    #region Dependencies 
     private Camera mainCamera;
     private Rigidbody2D rb;
     private PlayerInputActions inputActions;
+    #endregion
 
+    #region Movement Variables 
+    [Header ("Movement")]
     [SerializeField] private float maxSwimSpeed = 16f;
     [SerializeField] private float swimForce = 10f;
     [SerializeField] private float drag = 2f;
@@ -20,23 +24,32 @@ public class Player : MonoBehaviour
     [SerializeField] private float sprintForceMultiplier = 1.5f;
     private bool sprintBurst = false;
     private bool sprinting = false;
+    #endregion
 
+    #region Inventory Variables
+    [Header ("Inventory")]
     [SerializeField] private string[] collectableItems;
     private int[] itemsCollected;
+    #endregion
 
+    #region Awake 
     void Awake()
     {
         inputActions = new PlayerInputActions();
         inputActions.Player.Enable();
     }
+    #endregion
 
+    #region Start
     void Start()
     {
         mainCamera = Camera.main;
         rb = GetComponent<Rigidbody2D>();
         itemsCollected = new int[collectableItems.Length];
     }
+    #endregion
 
+    #region Updates
     void FixedUpdate()
     {
         ToMouseMovement(maxSwimSpeed);
@@ -69,7 +82,9 @@ public class Player : MonoBehaviour
             rb.AddForce(VectorToMouse().normalized * sprintBurstStrength);
         }
     }
+    #endregion
 
+    #region Sprint 
     public void OnSprint(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -89,7 +104,9 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         sprintBurst = false;
     }
+    #endregion
 
+    #region Mouse Input 
     private Vector2 VectorToMouse()
     {
         Vector2 mousePosition = GetMouseWorldPosition();
@@ -100,7 +117,9 @@ public class Player : MonoBehaviour
     {
         return mainCamera.ScreenToWorldPoint(inputActions.Player.MousePosition.ReadValue<Vector2>());
     }
+    #endregion
 
+    #region Item Collection 
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Collectable"))
@@ -116,7 +135,9 @@ public class Player : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Enable / Disable 
     void OnEnable()
     {
         inputActions.Player.Sprint.started += OnSprint;
@@ -127,4 +148,5 @@ public class Player : MonoBehaviour
         inputActions.Player.Sprint.started -= OnSprint;
         inputActions.Player.Sprint.canceled -= OnSprint;
     }
+    #endregion
 }
