@@ -4,13 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : MonoBehaviour
 {
-    private Rigidbody2D rb;
-
+    #region State Machine Variables 
     enum EnemyState : byte { Idle, Patrolling, Following, Chasing }
+    [Header ("State Machine")]
     [SerializeField] private EnemyState currentState = EnemyState.Idle;
+    #endregion
 
+    #region Movement Variables 
     private Vector2 targetDirection = Vector2.zero;
 
+    [Header ("Movement")]
     [SerializeField] private float maxSwimSpeed = 8f;
     [SerializeField] private float swimForce = 10f;
     [SerializeField] private float drag = 2f;
@@ -20,23 +23,34 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float sprintMultiplier = 1.8f;
     [SerializeField] private float sprintForceMultiplier = 1.5f;
     private bool sprinting = false;
+    #endregion
 
+    #region Sight Variables 
+    [Header ("Sight")]
     [SerializeField] private float detectionRange = 16f;
     [SerializeField] private float chaseDetectionRangeMultiplier = 1.5f;
     [SerializeField] private LayerMask detectionLayerMask;
     [SerializeField] private float eyeHeight = 0.2f;
     [SerializeField] private float eyeOffset = 0.6f;
     private Vector2 eyePosition = Vector2.zero;
+    #endregion
 
+    #region Patrol Variables 
+    [Header ("Patrol")]
     [SerializeField] private float patrolWidth = 200f;
     [SerializeField] private float patrolHeight = 10f;
     [SerializeField] private float patrolTimerMultiplier = 0.5f;
     private float patrolTimer = 0f;
     private Vector2 patrolPosition = Vector2.zero;
     private bool patrolStart = false;
+    #endregion
 
+    #region Dependencies 
+    private Rigidbody2D rb;
     public GameObject player;
+    #endregion
 
+    #region Start 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -44,12 +58,16 @@ public class Enemy : MonoBehaviour
         eyePosition = Vector2.up * eyeHeight + Vector2.right * eyeOffset;
         StartPatrol();
     }
+    #endregion
 
+    #region Update 
     void Update()
     {
         HandleEnemyState();
     }
+    #endregion
 
+    #region State Machine 
     private void HandleEnemyState()
     {
         switch (currentState)
@@ -72,7 +90,9 @@ public class Enemy : MonoBehaviour
         }
         MoveToTarget(maxSwimSpeed);
     }
+    #endregion
 
+    #region Patrol 
     private void StartPatrol()
     {
         currentState = EnemyState.Patrolling; 
@@ -87,12 +107,16 @@ public class Enemy : MonoBehaviour
         float y = Mathf.Sin(patrolTimer * 2) * patrolHeight;
         targetDirection = new Vector2(patrolPosition.x + x, patrolPosition.y + y) - (Vector2)transform.position;
     }
+    #endregion
 
+    #region Follow 
     private void FollowPlayer()
     {
         targetDirection = (Vector2)player.transform.position - (Vector2)transform.position;
     }
+    #endregion
 
+    #region Player Checking 
     private bool CheckForPlayer()
     {
         Vector2 directionToPlayer = ((Vector2)player.transform.position - ((Vector2)transform.position + eyePosition)).normalized;
@@ -119,7 +143,9 @@ public class Enemy : MonoBehaviour
         }
         return false;
     }
+    #endregion
 
+    #region Target Movement 
     private void MoveToTarget(float maxSpeed)
     {
         if (targetDirection.sqrMagnitude < 0.01f) return; 
@@ -139,4 +165,5 @@ public class Enemy : MonoBehaviour
         rb.AddForce(velocityDifference * currentForce);
         rb.AddForce(-rb.linearVelocity * drag);
     }
+    #endregion
 }
