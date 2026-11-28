@@ -11,6 +11,15 @@ public class Player : MonoBehaviour
     private PlayerInputActions inputActions;
     #endregion
 
+    #region Health & Stamina Variables
+    [Header ("Health & Stamina")]
+    [SerializeField] private float maxStamina = 60f;
+    [SerializeField] private float staminaRegenerationRate = 12f;
+    [SerializeField] private float staminaMultiplier = 84f;
+    private float stamina = 60f;
+    private bool staminaRegenerating = false;
+    #endregion
+
     #region Movement Variables 
     [Header ("Movement")]
     [SerializeField] private float maxSwimSpeed = 16f;
@@ -46,10 +55,20 @@ public class Player : MonoBehaviour
         mainCamera = Camera.main;
         rb = GetComponent<Rigidbody2D>();
         itemsCollected = new int[collectableItems.Length];
+        InitialiseHealthStamina();
+    }
+
+    private void InitialiseHealthStamina()
+    {
+        stamina = maxStamina;
     }
     #endregion
 
-    #region Updates
+    #region Update 
+    void Update()
+    {
+    }
+    
     void FixedUpdate()
     {
         ToMouseMovement(maxSwimSpeed);
@@ -65,8 +84,9 @@ public class Player : MonoBehaviour
         float newAngle = Mathf.MoveTowardsAngle(rb.rotation, mouseAngle, rotationSpeed * Time.fixedDeltaTime);
         rb.MoveRotation(newAngle);
 
-        float currentMaxSpeed = sprinting ? maxSpeed * sprintMultiplier : maxSpeed;
-        float currentForce = sprinting ? swimForce * sprintForceMultiplier : swimForce; 
+        if (stamina <= 0) StopSprint();
+        float currentMaxSpeed = sprinting && stamina > 0 ? maxSpeed * sprintMultiplier : maxSpeed;
+        float currentForce = sprinting && stamina > 0 ? swimForce * sprintForceMultiplier : swimForce; 
         
         float distance = directionToMouse.magnitude;
         float targetSpeed = Mathf.Min(currentMaxSpeed, distance * currentForce);
@@ -74,12 +94,13 @@ public class Player : MonoBehaviour
         Vector2 velocityDifference = targetVelocity - rb.linearVelocity;
         if (!sprintBurst)
         {
-            rb.AddForce(velocityDifference * currentForce);
-            rb.AddForce(-rb.linearVelocity * drag);
+            rb.AddForce(velocityDifference * currentForce - (rb.linearVelocity * drag));
+            if (sprinting) TakeStamina(currentForce / staminaMultiplier);
         }
         else
         {
             rb.AddForce(VectorToMouse().normalized * sprintBurstStrength);
+            TakeStamina(sprintBurstStrength / staminaMultiplier);
         }
     }
     #endregion
@@ -94,15 +115,51 @@ public class Player : MonoBehaviour
         }
         else if (context.canceled)
         {
-            sprinting = false;
+            StopSprint();
         }
     }
-
+    private void StopSprint()
+    {
+        sprinting = false; 
+        StartStaminaRegeneration();
+    }
+    
     private IEnumerator SprintBurst()
     {
         sprintBurst = true;
         yield return new WaitForSeconds(0.25f);
         sprintBurst = false;
+    }
+    #endregion
+
+    #region Stamina
+    private void TakeStamina(float staminaTaken)
+    {
+        stamina -= staminaTaken;
+        stamina = Mathf.Clamp(stamina, 0f, maxStamina);
+    }
+    
+    private void StartStaminaRegeneration()
+    {
+        if (!staminaRegenerating)
+        { 
+            staminaRegenerating = true; 
+            StartCoroutine(WaitForStaminaRegeneration()); 
+        }
+    }
+    private IEnumerator WaitForStaminaRegeneration()
+    {
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(RegenerateStamina());
+    }
+
+    private IEnumerator RegenerateStamina()
+    {
+        if (stamina >= maxStamina || sprinting){ staminaRegenerating = false; yield break; }
+        stamina += staminaRegenerationRate / staminaMultiplier;
+        stamina = Mathf.Clamp(stamina, 0f, maxStamina);
+        yield return new WaitForFixedUpdate();
+        StartCoroutine(RegenerateStamina());
     }
     #endregion
 
